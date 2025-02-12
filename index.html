@@ -18,20 +18,25 @@
         h1 {
             margin-bottom: 20px;
         }
-        #numbers {
-            font-size: 2rem;
+        .container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .box {
+            font-size: 1.5rem;
             font-weight: bold;
             padding: 15px;
             background: white;
             border-radius: 10px;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
-            min-width: 150px;
+            min-width: 120px;
             text-align: center;
         }
         .btn-container {
             display: flex;
             gap: 15px;
+            margin-top: 20px;
         }
         button {
             padding: 12px 25px;
@@ -59,17 +64,20 @@
 </head>
 <body>
     <h1>Random Numbers Generator</h1>
-    <div id="numbers">Click a button to generate numbers</div>
+    <div class="container">
+        <div class="box" id="smallNumbers">1-9</div>
+        <div class="box" id="largeNumbers">10-100</div>
+    </div>
     <div class="btn-container">
-        <button class="btn-small" onclick="generateNumbers(1, 9)">1 - 9</button>
-        <button class="btn-large" onclick="generateNumbers(10, 100)">10 - 100</button>
+        <button class="btn-small" onclick="generateNumbers(1, 9, 'smallNumbers')">1 - 9</button>
+        <button class="btn-large" onclick="generateNumbers(10, 100, 'largeNumbers')">10 - 100</button>
     </div>
 
     <script>
-        function generateNumbers(min, max) {
+        function generateNumbers(min, max, elementId) {
             const num1 = Math.floor(Math.random() * (max - min + 1)) + min;
             const num2 = Math.floor(Math.random() * (max - min + 1)) + min;
-            document.getElementById('numbers').innerText = `${num1} - ${num2}`;
+            document.getElementById(elementId).innerText = `${num1} - ${num2}`;
         }
     </script>
 </body>
