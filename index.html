@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Numbers Generator</title>
+    <title>Random Numbers</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,29 +11,28 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            flex-direction: column;
             background: linear-gradient(to right, #74ebd5, #acb6e5);
             color: #333;
+            flex-direction: column;
         }
         .box {
-            font-size: 1.5rem;
+            font-size: 3rem;
             font-weight: bold;
-            padding: 15px;
+            padding: 20px;
             background: white;
             border-radius: 10px;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
             min-width: 150px;
             text-align: center;
-            margin: 15px 0;
         }
         .btn-container {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
             margin-top: 20px;
         }
         button {
-            padding: 12px 25px;
+            padding: 10px 20px;
             font-size: 1rem;
             cursor: pointer;
             border: none;
@@ -41,61 +40,219 @@
             font-weight: bold;
             color: white;
             transition: 0.3s;
-        }
-        .btn-single {
             background-color: #28a745;
         }
-        .btn-single:hover {
+        button:hover {
             background-color: #218838;
-        }
-        .btn-double {
-            background-color: #007bff;
-        }
-        .btn-double:hover {
-            background-color: #0056b3;
-        }
-        .hidden {
-            display: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- Initial Selection -->
     <div id="selection">
-        <h2>Select Type of Numbers</h2>
-        <button class="btn-single" onclick="showGenerator('single')">Single Digit (1-9)</button>
-        <button class="btn-double" onclick="showGenerator('double')">Two Digit (10-100)</button>
-    </div>
-
-    <!-- Single Digit Generator -->
-    <div id="singleGenerator" class="hidden">
-        <h2>Single Digit Numbers</h2>
-        <div class="box" id="singleNumbers">1-9</div>
-        <button class="btn-single" onclick="generateNumbers(1, 9, 'singleNumbers')">Generate 1 - 9</button>
-    </div>
-
-    <!-- Two Digit Generator -->
-    <div id="doubleGenerator" class="hidden">
-        <h2>Two Digit Numbers</h2>
-        <div class="box" id="doubleNumbers">10-100</div>
-        <button class="btn-double" onclick="generateNumbers(10, 100, 'doubleNumbers')">Generate 10 - 100</button>
+        <h2>Select a Summation (11 - 17)</h2>
+        <div class="btn-container" id="sumButtons">
+            <button onclick="openGenerator(11)">11</button>
+            <button onclick="openGenerator(12)">12</button>
+            <button onclick="openGenerator(13)">13</button>
+            <button onclick="openGenerator(14)">14</button>
+            <button onclick="openGenerator(15)">15</button>
+            <button onclick="openGenerator(16)">16</button>
+            <button onclick="openGenerator(17)">17</button>
+        </div>
+        <button style="margin-top: 20px;" onclick="randomSum()">Random Sum</button>
+        <button style="margin-top: 10px;" onclick="doubleDigitSum()">Double Digit Sum</button>
     </div>
 
     <script>
-        function showGenerator(type) {
-            document.getElementById("selection").classList.add("hidden");
-            if (type === "single") {
-                document.getElementById("singleGenerator").classList.remove("hidden");
-            } else {
-                document.getElementById("doubleGenerator").classList.remove("hidden");
-            }
+        function openGenerator(targetSum) {
+            const newPage = window.open("", "_blank");
+            newPage.document.write(`<!DOCTYPE html>
+                <html lang='en'>
+                <head>
+                    <meta charset='UTF-8'>
+                    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                    <title>Generated Numbers</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            background: linear-gradient(to right, #74ebd5, #acb6e5);
+                            color: #333;
+                        }
+                        .box {
+                            font-size: 3rem;
+                            font-weight: bold;
+                            padding: 20px;
+                            background: white;
+                            border-radius: 10px;
+                            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+                            min-width: 150px;
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+                        button {
+                            padding: 10px 20px;
+                            font-size: 1rem;
+                            cursor: pointer;
+                            border: none;
+                            border-radius: 8px;
+                            font-weight: bold;
+                            color: white;
+                            transition: 0.3s;
+                            background-color: #28a745;
+                        }
+                        button:hover {
+                            background-color: #218838;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class='box' id='numberBox'></div>
+                    <button onclick='generatePair()'>Generate Again</button>
+                    <script>
+                        function generatePair() {
+                            let num1, num2;
+                            do {
+                                num1 = Math.floor(Math.random() * 9) + 1;
+                                num2 = targetSum - num1;
+                            } while (num2 < 1 || num2 > 9);
+                            document.getElementById('numberBox').innerText = num1 + " + " + num2;
+                        }
+                        let targetSum = ` + targetSum + `;
+                        generatePair();
+                    <\/script>
+                </body>
+                </html>`);
         }
 
-        function generateNumbers(min, max, elementId) {
-            const num1 = Math.floor(Math.random() * (max - min + 1)) + min;
-            const num2 = Math.floor(Math.random() * (max - min + 1)) + min;
-            document.getElementById(elementId).innerText = `${num1} - ${num2}`;
+        function randomSum() {
+            // const randomValue = Math.floor(Math.random() * (9)) + 1;
+            // openGenerator(randomValue);
+         
+            const newPage = window.open("", "_blank");
+            newPage.document.write(`<!DOCTYPE html>
+                <html lang='en'>
+                <head>
+                    <meta charset='UTF-8'>
+                    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                    <title>Double Digit Sum</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            background: linear-gradient(to right, #74ebd5, #acb6e5);
+                            color: #333;
+                        }
+                        .box {
+                            font-size: 3rem;
+                            font-weight: bold;
+                            padding: 20px;
+                            background: white;
+                            border-radius: 10px;
+                            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+                            min-width: 150px;
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+                        button {
+                            padding: 10px 20px;
+                            font-size: 1rem;
+                            cursor: pointer;
+                            border: none;
+                            border-radius: 8px;
+                            font-weight: bold;
+                            color: white;
+                            transition: 0.3s;
+                            background-color: #28a745;
+                        }
+                        button:hover {
+                            background-color: #218838;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class='box' id='numberBox'></div>
+                    <button onclick='generateDoubleDigitPair()'>Generate Again</button>
+                    <script>
+                        function generateDoubleDigitPair() {
+                            let num1 = Math.floor(Math.random() * 9) + 1;
+                            let num2 = Math.floor(Math.random() * 9) + 1;
+                            document.getElementById('numberBox').innerText = num1 + " + " + num2;
+                        }
+                        generateDoubleDigitPair();
+                    <\/script>
+                </body>
+                </html>`);
+        }
+
+        function doubleDigitSum() {
+            const newPage = window.open("", "_blank");
+            newPage.document.write(`<!DOCTYPE html>
+                <html lang='en'>
+                <head>
+                    <meta charset='UTF-8'>
+                    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                    <title>Double Digit Sum</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            background: linear-gradient(to right, #74ebd5, #acb6e5);
+                            color: #333;
+                        }
+                        .box {
+                            font-size: 3rem;
+                            font-weight: bold;
+                            padding: 20px;
+                            background: white;
+                            border-radius: 10px;
+                            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+                            min-width: 150px;
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+                        button {
+                            padding: 10px 20px;
+                            font-size: 1rem;
+                            cursor: pointer;
+                            border: none;
+                            border-radius: 8px;
+                            font-weight: bold;
+                            color: white;
+                            transition: 0.3s;
+                            background-color: #28a745;
+                        }
+                        button:hover {
+                            background-color: #218838;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class='box' id='numberBox'></div>
+                    <button onclick='generateDoubleDigitPair()'>Generate Again</button>
+                    <script>
+                        function generateDoubleDigitPair() {
+                            let num1 = Math.floor(Math.random() * 91) + 10;
+                            let num2 = Math.floor(Math.random() * 91) + 10;
+                            document.getElementById('numberBox').innerText = num1 + " + " + num2;
+                        }
+                        generateDoubleDigitPair();
+                    <\/script>
+                </body>
+                </html>`);
         }
     </script>
 
